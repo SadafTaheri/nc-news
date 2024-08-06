@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ArticleContext } from "../App";
 import baseApi from "../../api";
+import Comments from "./Comments";
 
 export default function SingleArticle() {
   const { articleId } = useParams();
@@ -17,7 +18,7 @@ export default function SingleArticle() {
       .catch((err) => {
         console.log(err);
       });
-  }, [articleId, articles]);
+  }, []);
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -45,7 +46,7 @@ export default function SingleArticle() {
           </button>
         </h4>
         <h4>Comment: {article.comment_count}</h4>
-        <h6>Comments list:</h6>
+        <Comments />
       </div>
     </div>
   );
