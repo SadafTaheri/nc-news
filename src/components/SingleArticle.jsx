@@ -6,8 +6,9 @@ import Comments from "./Comments";
 
 export default function SingleArticle() {
   const { articleId } = useParams();
-  const { articles, isLoading } = useContext(ArticleContext);
+  const { isLoading } = useContext(ArticleContext);
   const [article, setArticle] = useState({});
+  const [vote, setVote] = useState(0);
 
   useEffect(() => {
     baseApi
@@ -24,6 +25,14 @@ export default function SingleArticle() {
     return <h1>Loading...</h1>;
   }
 
+  const increaseVote = () => {
+    setVote(vote + 1);
+  };
+
+  const decreaseVote = () => {
+    setVote(vote - 1);
+  };
+
   return (
     <div>
       <div style={{ border: "1px solid white" }}>
@@ -39,12 +48,23 @@ export default function SingleArticle() {
         <p>{article.body}</p>
       </div>
       <div>
-        <h4>
-          votes: {article.votes}{" "}
-          <button style={{ backgroundColor: "gray", padding: "3px" }}>
-            Vote
+        <div>
+          <button
+            onClick={decreaseVote}
+            style={{ backgroundColor: "red", padding: "3px" }}
+          >
+            -1
           </button>
-        </h4>
+          <h4 style={{ display: "inline-block", margin: "5px 10px" }}>
+            Votes: {vote}{" "}
+          </h4>
+          <button
+            onClick={increaseVote}
+            style={{ backgroundColor: "green", padding: "3px" }}
+          >
+            +1
+          </button>
+        </div>
         <h4>Comment: {article.comment_count}</h4>
         <Comments />
       </div>
