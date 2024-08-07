@@ -10,6 +10,8 @@ export default function Comments() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [submitErr, setSubmitErr] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const currentUser = "tickle122";
 
   useEffect(() => {
     setIsLoading(true);
@@ -37,6 +39,7 @@ export default function Comments() {
       username: "tickle122",
       body: newComment,
     };
+
     baseApi
       .post(`/articles/${articleId}/comments`, comment)
       .then((res) => {
@@ -48,6 +51,23 @@ export default function Comments() {
       .catch((err) => {
         setSubmitErr("Sending comment failed. Please try again!", err);
         setIsSubmit(false);
+      });
+  };
+
+  const handleDeleteComent = (commentId) => {
+    if (isDeleting) return;
+    setIsDeleting(true);
+    baseApi
+      .delete(`/comments/${commentId}`)
+      .then(() => {
+        setComments((currentComments) =>
+          currentComments.filter((comment) => comment.comment_id !== commentId)
+        );
+        setIsDeleting(false);
+      })
+      .catch((err) => {
+        console.log("deleting comment failed", err);
+        setIsDeleting(false);
       });
   };
 
@@ -75,9 +95,21 @@ export default function Comments() {
                 <p>
                   <strong>Name: {comment.author}</strong>
                 </p>
+
                 <p>{comment.body}</p>
                 <p>Votes: {comment.votes}</p>
                 <p>Date: {comment.created_at}</p>
+                {comment.author === currentUser && (
+                  <button
+                    onClick={() => {
+                      handleDeleteComent(comment.comment_id);
+                    }}
+                    disabled={isDeleting}
+                    style={{ backgroundColor: "red" }}
+                  >
+                    {isDeleting ? "Comment deleting..." : "Delete"}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
