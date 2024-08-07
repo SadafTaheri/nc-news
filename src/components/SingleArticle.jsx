@@ -9,29 +9,40 @@ export default function SingleArticle() {
   const { isLoading } = useContext(ArticleContext);
   const [article, setArticle] = useState({});
   const [vote, setVote] = useState(0);
+  const [userVoted, setUserVoted] = useState(0);
 
   useEffect(() => {
     baseApi
       .get(`/articles/${articleId}`)
       .then((res) => {
         setArticle(res.data.article);
+        setVote(res.data.article.votes);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [articleId]);
+
+  const updateVoting = (incVotes) => {
+    if (userVoted) {
+      alert("You voted on this article!");
+      return;
+    }
+    baseApi
+      .patch(`/articles/${articleId}`, { inc_votes: incVotes })
+      .then((res) => {
+        setArticle(res.data.article);
+        setVote(res.data.article.votes);
+        setUserVoted(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
-
-  const increaseVote = () => {
-    setVote(vote + 1);
-  };
-
-  const decreaseVote = () => {
-    setVote(vote - 1);
-  };
 
   return (
     <div>
@@ -50,7 +61,7 @@ export default function SingleArticle() {
       <div>
         <div>
           <button
-            onClick={decreaseVote}
+            onClick={() => updateVoting(-1)}
             style={{ backgroundColor: "red", padding: "3px" }}
           >
             -1
@@ -59,13 +70,13 @@ export default function SingleArticle() {
             Votes: {vote}{" "}
           </h4>
           <button
-            onClick={increaseVote}
+            onClick={() => updateVoting(1)}
             style={{ backgroundColor: "green", padding: "3px" }}
           >
             +1
           </button>
         </div>
-        <h4>Comment: {article.comment_count}</h4>
+
         <Comments />
       </div>
     </div>
