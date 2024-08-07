@@ -1,20 +1,65 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { ArticleContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 export default function ArticlesList() {
-  const { articles, isLoading } = useContext(ArticleContext);
+  const { articles, setArticles } = useContext(ArticleContext);
   const navigate = useNavigate();
+  const [searchArticles, setSearchArticles] = useSearchParams();
+  const [err, setErr] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const sort_by = searchArticles.get("sort_by") || "created_at";
+  const order = searchArticles.get("order") || "desc";
+
   const handleClickReadMore = (articleId) => {
     navigate(`/articles/${articleId}`);
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get("https://be-nc-news-c79i.onrender.com/api/articles", {
+        params: { sort_by, order },
+      })
+      .then((res) => {
+        setArticles(res.data.articles);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErr(err);
+        setIsLoading(false);
+      });
+  }, [sort_by, order, setArticles, setIsLoading]);
+
+  const handleSortChange = (event) => {
+    const newSortBy = event.target.value;
+    setSearchArticles({ sort_by: newSortBy, order });
+  };
+
+  const handleOrderChange = () => {
+    const newOrder = order === "asc" ? "desc" : "asc";
+    setSearchArticles({ sort_by, order: newOrder });
   };
 
   return (
     <div>
       <h1>Articles</h1>
+      <div>
+        <label>Sort By: </label>
+        <select value={sort_by} onChange={handleSortChange}>
+          <option value="created_at">Date</option>
+          <option value="comment_count">Comment Count</option>
+          <option value="votes">Votes</option>
+        </select>
+        <button onClick={handleOrderChange}>
+          {order === "asc" ? "High to Low" : "Low to High"}
+        </button>
+      </div>
       {isLoading ? (
-        <h2 style={{ color: "green" }}>Loading...</h2>
+        <h1>Loading...</h1>
       ) : (
         <ul>
           {articles.map((article) => (
