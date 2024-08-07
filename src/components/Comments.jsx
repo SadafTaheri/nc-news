@@ -6,19 +6,22 @@ import { ArticleContext } from "../App";
 export default function Comments() {
   const { articleId } = useParams();
   const [comments, setComments] = useState([]);
-  const { isLoading } = useContext(ArticleContext);
   const [newComment, setNewComment] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [submitErr, setSubmitErr] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     baseApi
       .get(`/articles/${articleId}/comments`)
       .then((res) => {
         setComments(res.data.comments);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   }, [articleId]);
 
@@ -49,7 +52,7 @@ export default function Comments() {
   };
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <h1>Loading comments...</h1>;
   }
 
   return (
@@ -59,6 +62,7 @@ export default function Comments() {
           <p>No comments</p>
         ) : (
           <ul>
+            <h4>Comments:</h4>
             {comments.map((comment) => (
               <li
                 key={comment.comment_id}
