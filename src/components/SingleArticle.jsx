@@ -10,6 +10,7 @@ export default function SingleArticle() {
   const [article, setArticle] = useState({});
   const [vote, setVote] = useState(0);
   const [userVoted, setUserVoted] = useState(0);
+  const [err, setErr] = useState(null);
 
   useEffect(() => {
     baseApi
@@ -20,6 +21,7 @@ export default function SingleArticle() {
       })
       .catch((err) => {
         console.log(err);
+        setErr("Article not found.");
       });
   }, [articleId]);
 
@@ -37,6 +39,7 @@ export default function SingleArticle() {
       })
       .catch((err) => {
         console.log(err);
+        setErr("Voting Failed. Please try again!");
       });
   };
 
@@ -46,6 +49,12 @@ export default function SingleArticle() {
 
   return (
     <div>
+      {err && (
+        <div style={{ color: "red" }}>
+          <h1>Error</h1>
+          <h3>{err}</h3>
+        </div>
+      )}
       <div style={{ border: "1px solid white" }}>
         <h3>{article.title}</h3>
         <h6>

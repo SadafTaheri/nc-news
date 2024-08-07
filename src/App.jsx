@@ -10,6 +10,8 @@ import Footer from "./components/Footer";
 import { createContext, useEffect, useState } from "react";
 import baseApi from "../api";
 import SingleArticle from "./components/SingleArticle";
+import TopicCard from "./components/TopicCard";
+import NotFound from "./components/NotFound";
 
 export const ArticleContext = createContext();
 
@@ -31,15 +33,17 @@ function App() {
   }, []);
   return (
     <div>
-      <ArticleContext.Provider value={{ articles, isLoading }}>
+      <ArticleContext.Provider value={{ articles, setArticles, isLoading }}>
         <Header />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/articles" element={<ArticlesList />} />
-          <Route path="/topics" element={<Topics />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/articles/:articleId" element={<SingleArticle />} />
+          <Route path="/topics" element={<Topics />} />
+          <Route path="/topics/:slug" element={<TopicCard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </ArticleContext.Provider>
