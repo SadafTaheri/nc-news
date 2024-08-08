@@ -12,6 +12,7 @@ export default function Comments() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const currentUser = "tickle122";
+  const [buttonText, setButtonText] = useState("Send Comment");
 
   useEffect(() => {
     setIsLoading(true);
@@ -34,6 +35,7 @@ export default function Comments() {
       return;
     }
     setIsSubmit(true);
+    setButtonText("Sending...");
 
     const comment = {
       username: "tickle122",
@@ -47,15 +49,18 @@ export default function Comments() {
         setSubmitErr(null);
         setComments((showComments) => [res.data.comment, ...showComments]);
         setIsSubmit(false);
+        setButtonText("Send Comment");
       })
       .catch((err) => {
         setSubmitErr("Sending comment failed. Please try again!", err);
         setIsSubmit(false);
+        setButtonText("Send Comment");
       });
   };
 
   const handleDeleteComent = (commentId) => {
-    if (isDeleting) return;
+    const userConfirm = window.confirm("Do you want to delete your comment?");
+    if (!userConfirm || isDeleting) return;
     setIsDeleting(true);
     baseApi
       .delete(`/comments/${commentId}`)
@@ -127,8 +132,11 @@ export default function Comments() {
             disabled={isSubmit}
           ></textarea>
           <button type="submit" style={{ backgroundColor: "grey" }}>
-            {isSubmit ? "Comment sent successfully!" : "Send Comment"}
+            {buttonText}
           </button>
+          {isSubmit && (
+            <p style={{ color: "green" }}>Comment sent successfully!</p>
+          )}
           {submitErr && <p style={{ color: "red" }}>{submitErr}</p>}
         </form>
       </div>

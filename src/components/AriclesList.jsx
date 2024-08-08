@@ -45,7 +45,7 @@ export default function ArticlesList() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Articles</h1>
       <div>
         <label>Sort By: </label>
