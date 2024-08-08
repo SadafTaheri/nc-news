@@ -26,10 +26,10 @@ export default function SingleArticle() {
   }, [articleId]);
 
   const updateVoting = (incVotes) => {
-    if (userVoted) {
-      alert("You voted on this article!");
-      return;
-    }
+    // if (userVoted) {
+    //   alert("You voted on this article!");
+    //   return;
+    // }
     baseApi
       .patch(`/articles/${articleId}`, { inc_votes: incVotes })
       .then((res) => {

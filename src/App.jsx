@@ -32,10 +32,10 @@ function App() {
       });
   }, []);
   return (
-    <div>
+    <div className="container mx-auto ">
       <ArticleContext.Provider value={{ articles, setArticles, isLoading }}>
         <Header />
-        <Navbar />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/articles" element={<ArticlesList />} />
