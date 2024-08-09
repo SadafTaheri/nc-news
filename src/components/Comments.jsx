@@ -86,8 +86,16 @@ export default function Comments() {
         {comments.length === 0 ? (
           <p>No comments</p>
         ) : (
-          <ul>
-            <h4>Comments:</h4>
+          <ul className="text-slate-300 flex flex-col">
+            <div className="flex  justify-between ">
+              <h4 className="mt-8 text-xl text-slate-300">Comments:</h4>
+              <a
+                href="#addComment"
+                className="text-blue-500 underline mb-3 text-l relative top-8"
+              >
+                Add Your Comment
+              </a>
+            </div>
             {comments.map((comment) => (
               <li
                 key={comment.comment_id}
@@ -97,11 +105,11 @@ export default function Comments() {
                   padding: "10px",
                 }}
               >
-                <p>
+                <p className="text-rose-500">
                   <strong>Name: {comment.author}</strong>
                 </p>
 
-                <p>{comment.body}</p>
+                <p className="text-justify mt-2 mb-2">{comment.body}</p>
                 <p>Votes: {comment.votes}</p>
                 <p>Date: {comment.created_at}</p>
                 {comment.author === currentUser && (
@@ -121,19 +129,28 @@ export default function Comments() {
         )}
       </div>
 
-      <div>
-        <h3>Add a Comment</h3>
+      <div className="mt-4" id="addComment">
+        <h3 className="text-xl text-slate-300 border-t-2 border-slate-500 mt-10">
+          Add a Comment
+        </h3>
         <form onSubmit={handleCommentSubmit}>
           <textarea
+            className="placeholder-slate-400 text-slate-600 mt-2"
             style={{ height: "150px", width: "100%" }}
             value={newComment}
             placeholder="Write a new Comment..."
             onChange={(e) => setNewComment(e.target.value)}
             disabled={isSubmit}
           ></textarea>
-          <button type="submit" style={{ backgroundColor: "grey" }}>
-            {buttonText}
-          </button>
+          <div className="flex flex-col items-center mt-4">
+            <button
+              type="submit"
+              className="py-1 px-2 bg-green-600 rounded-2xl"
+            >
+              {buttonText}
+            </button>
+          </div>
+
           {isSubmit && (
             <p style={{ color: "green" }}>Comment sent successfully!</p>
           )}
