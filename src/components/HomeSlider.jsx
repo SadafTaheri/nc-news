@@ -7,37 +7,37 @@ import { Link } from "react-router-dom";
 
 const images = [
   {
-    src: "../../pics/football3.jpg",
+    src: "/pics/football3.jpg",
     alt: "football_img",
     link: "/topics/football",
     topic: "Football",
   },
   {
-    src: "../../pics/coding2.jpg",
+    src: "/pics/coding2.jpg",
     alt: "coding_img",
     link: "/topics/coding",
     topic: "Coding",
   },
   {
-    src: "../../pics/cooking.jpg",
+    src: "/pics/cooking.jpg",
     alt: "cooking_img",
     link: "/topics/cooking",
     topic: "Cooking",
   },
   {
-    src: "../../pics/football3.jpg",
+    src: "/pics/football3.jpg",
     alt: "football_img",
     link: "/topics/football",
     topic: "Football",
   },
   {
-    src: "../../pics/coding2.jpg",
+    src: "/pics/coding2.jpg",
     alt: "coding_img",
     link: "/topics/coding",
     topic: "Coding",
   },
   {
-    src: "../../pics/cooking.jpg",
+    src: "/pics/cooking.jpg",
     alt: "cooking_img",
     link: "/topics/cooking",
     topic: "Cooking",
