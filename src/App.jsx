@@ -32,22 +32,24 @@ function App() {
       });
   }, []);
   return (
-    <div className="container mx-auto ">
-      <ArticleContext.Provider value={{ articles, setArticles, isLoading }}>
-        <Header />
+    <>
+      <div className="container mx-auto ">
+        <ArticleContext.Provider value={{ articles, setArticles, isLoading }}>
+          <Header />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/articles" element={<ArticlesList />} />
-          <Route path="/articles/:articleId" element={<SingleArticle />} />
-          <Route path="/topics" element={<Topics />} />
-          <Route path="/topics/:slug" element={<TopicCard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </ArticleContext.Provider>
-    </div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/articles" element={<ArticlesList />} />
+            <Route path="/articles/:articleId" element={<SingleArticle />} />
+            <Route path="/topics" element={<Topics />} />
+            <Route path="/topics/:slug" element={<TopicCard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ArticleContext.Provider>
+      </div>
+      <Footer />
+    </>
   );
 }
 
